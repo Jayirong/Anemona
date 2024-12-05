@@ -33,4 +33,9 @@ export class LoginComponent {
     )
   }
 
+  onLinkClick() {
+    console.log("Link clicked");
+    this.router.navigate(['/registro'])    
+  }
+
 }

@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
 export class AuthService {
 
   private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrlUser = 'http://localhost:8080/api/user';
 
   constructor(private http: HttpClient) { }
 
@@ -21,11 +22,24 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token');
+    if (typeof window !== 'undefined' && window.localStorage) {
+      return !!localStorage.getItem('token');
+    }
+    return false; 
   }
 
   logout() {
-    localStorage.removeItem('token');
+    if (typeof window !== 'undefined' && window.localStorage) {
+      localStorage.removeItem('token');
+    }    
+  }
+
+  register(user: any): Observable<any> {
+    return this.http.post(`${this.apiUrlUser}/register`, user, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
   }
  
 }
